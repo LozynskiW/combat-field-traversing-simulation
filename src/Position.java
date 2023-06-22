@@ -7,9 +7,14 @@ class Position {
     public Position() {
     }
 
+    public Position(int y, int x) {
+        this.coordinates = new int[]{y,x};
+    }
+
     public Position(int[] coordinates) {
         this.coordinates = coordinates;
     }
+
 
     public void changeCoordinatesToNextMove(Compass compass) {
 

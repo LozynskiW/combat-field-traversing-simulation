@@ -1,7 +1,7 @@
 class MeanOfCombat {
 
     private final double firingRate;
-    private final int firingRange;
+    private final double firingRange;
 
     private final double possibilityForOneShotElimination;
 
@@ -15,7 +15,7 @@ class MeanOfCombat {
         return firingRate;
     }
 
-    public int getFiringRange() {
+    public double getFiringRange() {
         return firingRange;
     }
 

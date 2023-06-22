@@ -11,7 +11,7 @@ class Clock {
     private boolean isCountingOver;
 
     public Clock() {
-        this.timeStep = new Time(1);
+        this.timeStep = new Time(1000);
         this.isCountingOver = true;
     }
 
@@ -44,6 +44,11 @@ class Clock {
             this.isCountingOver = false;
         }
 
+    }
+
+    public void setEndTime(int minutes) {
+
+        this.endTime = new Time(1000L *60*minutes);
     }
 
     public void incrementTime() {

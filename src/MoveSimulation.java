@@ -52,9 +52,7 @@ class MoveSimulation {
             }
 
             combatMoveModifier = 1;
-
         }
-
 
     }
 
