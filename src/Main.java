@@ -85,7 +85,9 @@ public class Main {
 
         simulationTest.simulate();
 
-        System.out.println(simulationTest.getUnitList().get(0).getPastPositions());
+        System.out.println(unit.getName() + " used ammunition = " + unit.getNumberOfAmmoUsed());
+        System.out.println(uni2.getName() + " used ammunition = " + uni2.getNumberOfAmmoUsed());
 
+        System.out.println(simulationTest.getActivityLog());
     }
 }

@@ -12,6 +12,8 @@ class Unit {
     private List<MeanOfCombat> meansOfCombat;
     private Time timeToCover100m; //miliseconds
 
+    private int numberOfAmmoUsed;
+
     private boolean isInCombat;
 
     public Unit() {
@@ -20,6 +22,7 @@ class Unit {
         this.setStartingPosition(new int[]{0,0});
         this.meansOfCombat = new ArrayList<>();
         this.movementPath = new LinkedList<>();
+        this.numberOfAmmoUsed = 0;
     }
 
     public void move() {
@@ -42,7 +45,7 @@ class Unit {
     public boolean attack() {
 
         for (MeanOfCombat meanOfCombat : this.meansOfCombat) {
-
+            this.numberOfAmmoUsed ++;
             if (Util.wasAttackSuccessful(meanOfCombat.getPossibilityForOneShotElimination())) return true;
 
         }
@@ -150,6 +153,10 @@ class Unit {
         this.name = name;
     }
 
+    public int getNumberOfAmmoUsed() {
+        return numberOfAmmoUsed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -168,8 +175,6 @@ class Unit {
         return "Unit{" +
                 "name='" + name + '\'' +
                 ", currentPosition=" + Arrays.toString(currentPosition) +
-                ", pastPositions=" + pastPositions +
-                ", movementPath=" + movementPath +
                 ", meansOfCombat=" + meansOfCombat +
                 ", timeToCover100m=" + timeToCover100m +
                 ", isInCombat=" + isInCombat +

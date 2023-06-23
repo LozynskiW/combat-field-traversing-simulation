@@ -13,6 +13,8 @@ class Simulation {
 
     private Clock clock;
 
+    private Map<Time, String> activityLog;
+
     private final double intensityOfDetection;
     private final double intensityOfDetectionDistance;
 
@@ -21,6 +23,7 @@ class Simulation {
         this.intensityOfDetectionDistance = intensityOfDetectionDistance;
         this.shootingUnits = new ArrayList<>();
         this.detectingUnits = new HashMap<>();
+        this.activityLog = new LinkedHashMap<>();
     }
 
     public void simulate() {
@@ -30,7 +33,6 @@ class Simulation {
             return;
 
         }
-
         while (true) {
 
             if (clock.isCountingOver()) {
@@ -126,6 +128,7 @@ class Simulation {
                         Unit unit1 = this.getTheOtherUnit(unit);
                         unit1.loseMeansOfCombat();
                         System.out.println(time + " " + unit.getName() + " successfully attacked enemy");
+                        this.activityLog.put(time, unit.getName() + " successfully attacked enemy");
                         continue;
                     } else {
                         System.out.println(time + " " + unit.getName() + " attacked enemy, but missed");
@@ -199,5 +202,9 @@ class Simulation {
 
     public void setClock(Clock clock) {
         this.clock = clock;
+    }
+
+    public Map<Time, String> getActivityLog() {
+        return activityLog;
     }
 }
