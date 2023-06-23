@@ -18,20 +18,56 @@ public class Main {
         Unit uni2 = new Unit();
         uni2.setTimeToCover100m(new Time(3000));
 
-        Deque<Compass> movementPath = new LinkedList<>();
-        movementPath.add(Compass.NORTH);
-        movementPath.add(Compass.NORTH);
-        movementPath.add(Compass.NORTH_EAST);
-        movementPath.add(Compass.EAST);
+        MeanOfCombat tank = new MeanOfCombat(5000, 3000, 0.3);
+        MeanOfCombat mortar = new MeanOfCombat(3000, 2000, 0.2);
 
-        unit.setMovementPath(movementPath);
+        Deque<Compass> movementPath1 = new LinkedList<>();
+        movementPath1.add(Compass.NORTH);
+        movementPath1.add(Compass.NORTH);
+        movementPath1.add(Compass.NORTH_EAST);
+        movementPath1.add(Compass.EAST);
+        movementPath1.add(Compass.EAST);
+        movementPath1.add(Compass.EAST);
+        movementPath1.add(Compass.NORTH_EAST);
+        movementPath1.add(Compass.NORTH_EAST);
+        movementPath1.add(Compass.NORTH_EAST);
+        movementPath1.add(Compass.NORTH);
+        movementPath1.add(Compass.NORTH);
+        movementPath1.add(Compass.NORTH);
+        movementPath1.add(Compass.EAST);
+        movementPath1.add(Compass.EAST);
+        movementPath1.add(Compass.EAST);
+
+        Deque<Compass> movementPath2 = new LinkedList<>();
+        movementPath1.add(Compass.SOUTH);
+        movementPath1.add(Compass.SOUTH);
+        movementPath1.add(Compass.SOUTH_WEST);
+        movementPath1.add(Compass.SOUTH);
+        movementPath1.add(Compass.WEST);
+        movementPath1.add(Compass.WEST);
+        movementPath1.add(Compass.SOUTH_WEST);
+        movementPath1.add(Compass.SOUTH_WEST);
+        movementPath1.add(Compass.SOUTH_WEST);
+        movementPath1.add(Compass.SOUTH_WEST);
+        movementPath1.add(Compass.SOUTH);
+        movementPath1.add(Compass.SOUTH);
+        movementPath1.add(Compass.WEST);
+        movementPath1.add(Compass.WEST);
+        movementPath1.add(Compass.WEST);
+
+        unit.setName("1 brigade");
+        unit.setMovementPath(movementPath1);
         unit.setStartingPosition(new int[]{0,0});
         unit.setInCombat(false);
         unit.setTimeToCover100m(new Time(1000*60));
+        unit.addMeanOfCombat(tank);
 
-        uni2.setMovementPath(movementPath);
-        uni2.setStartingPosition(new int[]{5,5});
+        uni2.setName("2 brigade");
+        uni2.setMovementPath(movementPath1);
+        uni2.setStartingPosition(new int[]{10,10});
         uni2.setInCombat(false);
+        uni2.setTimeToCover100m(new Time(1000*60));
+        uni2.addMeanOfCombat(mortar);
 
         List<Unit> unitList = new ArrayList<>();
         unitList.add(unit);
@@ -43,7 +79,7 @@ public class Main {
 
         Simulation simulationTest = new Simulation(0.5, 100);
 
-        simulationTest.setUnitList(List.of(unit, uni2));
+        simulationTest.setUnitList(unitList);
         simulationTest.setClock(clock);
         simulationTest.setTerrain(terrain);
 

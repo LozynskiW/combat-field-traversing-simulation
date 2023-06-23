@@ -18,6 +18,8 @@ class Unit {
         this.isInCombat = false;
         this.pastPositions = new LinkedList<>();
         this.setStartingPosition(new int[]{0,0});
+        this.meansOfCombat = new ArrayList<>();
+        this.movementPath = new LinkedList<>();
     }
 
     public void move() {
@@ -96,6 +98,10 @@ class Unit {
         this.meansOfCombat = meansOfCombat;
     }
 
+    public void addMeanOfCombat(MeanOfCombat meansOfCombat) {
+        this.meansOfCombat.add(meansOfCombat);
+    }
+
     public Time getTimeToCover100m() {
         return timeToCover100m;
     }
@@ -149,14 +155,12 @@ class Unit {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Unit unit = (Unit) o;
-        return isInCombat == unit.isInCombat && Arrays.equals(currentPosition, unit.currentPosition) && Objects.equals(pastPositions, unit.pastPositions) && Objects.equals(movementPath, unit.movementPath) && Objects.equals(meansOfCombat, unit.meansOfCombat) && Objects.equals(timeToCover100m, unit.timeToCover100m);
+        return Objects.equals(name, unit.name) && Objects.equals(timeToCover100m, unit.timeToCover100m);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(pastPositions, movementPath, meansOfCombat, timeToCover100m, isInCombat);
-        result = 31 * result + Arrays.hashCode(currentPosition);
-        return result;
+        return Objects.hash(name, timeToCover100m);
     }
 
     @Override

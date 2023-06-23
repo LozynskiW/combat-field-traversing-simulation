@@ -54,6 +54,10 @@ class Simulation {
 
         double distance;
 
+        if (this.detectingUnits.size() > 0) return true;
+
+        if (this.shootingUnits.size() > 0) return true;
+
         for (Unit unitDetecting : unitList) {
 
             for (Unit unitBeingDetected : unitList) {
@@ -100,12 +104,17 @@ class Simulation {
                 continue;
             }
 
-            if (this.detectingUnits.get(unit).getTime() <= time.getTime()) {
+            if (this.detectingUnits.containsKey(unit)) {
 
-                this.detectingUnits.remove(unit);
-                this.shootingUnits.add(unit);
-                System.out.println(time + " " + unit.getName() + " started to detect enemy");
-                continue;
+                System.out.println(this.detectingUnits.get(unit).getTime() + " " + time.getTime());
+                if (this.detectingUnits.get(unit).getTime() <= time.getTime()) {
+
+                    this.detectingUnits.remove(unit);
+                    this.shootingUnits.add(unit);
+                    System.out.println(time + " " + unit.getName() + " started to detect enemy");
+                    continue;
+                }
+
             }
 
             if (this.shootingUnits.contains(unit)) {
