@@ -25,37 +25,31 @@ public class Main {
         movementPath.add(Compass.EAST);
 
         unit.setMovementPath(movementPath);
-        unit.setStartingPosition(new Position(new int[]{0,0}));
+        unit.setStartingPosition(new int[]{0,0});
         unit.setInCombat(false);
         unit.setTimeToCover100m(new Time(1000*60));
 
         uni2.setMovementPath(movementPath);
-        uni2.setStartingPosition(new Position(new int[]{5,5}));
+        uni2.setStartingPosition(new int[]{5,5});
         uni2.setInCombat(false);
 
-        System.out.println(unit);
         List<Unit> unitList = new ArrayList<>();
         unitList.add(unit);
         unitList.add(uni2);
 
-        Terrain terrain = new Terrain(100);
+        Terrain terrain = new Terrain();
         terrain.setHeight(1000);
         terrain.setWidth(1000);
 
-        MoveSimulation moveSimulation = new MoveSimulation(unitList, terrain);
+        Simulation simulationTest = new Simulation(0.5, 100);
 
-        while (true) {
+        simulationTest.setUnitList(List.of(unit, uni2));
+        simulationTest.setClock(clock);
+        simulationTest.setTerrain(terrain);
 
-            moveSimulation.simulate(clock.getCurrentTime());
+        simulationTest.simulate();
 
-            clock.incrementTime();
-
-            if (clock.isCountingOver()) break;
-
-        }
-
-        System.out.println(unit.getPastPositions());
-        System.out.println(uni2.getPastPositions());
+        System.out.println(simulationTest.getUnitList().get(0).getPastPositions());
 
     }
 }

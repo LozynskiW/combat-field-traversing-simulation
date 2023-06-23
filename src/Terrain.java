@@ -8,17 +8,12 @@ class Terrain {
 
     private final int minGridLength;
 
-    public Terrain(int minGridLength) {
-        this.minGridLength = minGridLength;
+    public Terrain() {
+        this.minGridLength = 100; //[m]
     }
 
     public int getMinGridLength() {
         return minGridLength;
-    }
-
-    public double calculateDistanceBetweenUnits(Unit unitA, Unit unitB) {
-
-        return 0;
     }
 
     public int getHeight() {

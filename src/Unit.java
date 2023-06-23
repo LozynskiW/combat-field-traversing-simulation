@@ -1,14 +1,13 @@
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.sql.Time;
-import java.util.Objects;
 
 class Unit {
 
-    private Position currentPosition;
+    private String name;
 
-    private LinkedList<Position> pastPositions;
+    private int[] currentPosition;
+
+    private final LinkedList<int[]> pastPositions;
     private Deque<Compass> movementPath; //FIFO
     private List<MeanOfCombat> meansOfCombat;
     private Time timeToCover100m; //miliseconds
@@ -18,7 +17,7 @@ class Unit {
     public Unit() {
         this.isInCombat = false;
         this.pastPositions = new LinkedList<>();
-        this.setStartingPosition(new Position(0,0));
+        this.setStartingPosition(new int[]{0,0});
     }
 
     public void move() {
@@ -27,34 +26,56 @@ class Unit {
 
         this.addPastPosition(this.currentPosition);
 
-        this.currentPosition.changeCoordinatesToNextMove(
+        this.changeCoordinatesToNextMove(
                 Objects.requireNonNull(this.movementPath.pollFirst())
         );
     }
 
-    public boolean isTargetDetected() {
+    private void changeCoordinatesToNextMove(Compass compass) {
+
+        this.currentPosition[0] += compass.getMovement()[0];
+        this.currentPosition[1] += compass.getMovement()[1];
+    }
+
+    public boolean attack() {
 
         for (MeanOfCombat meanOfCombat : this.meansOfCombat) {
 
-
+            if (Util.wasAttackSuccessful(meanOfCombat.getPossibilityForOneShotElimination())) return true;
 
         }
 
         return false;
+    }
+
+    public void loseMeansOfCombat() {
+
+        if (this.meansOfCombat.size() > 0) this.meansOfCombat.remove(0);
 
     }
 
-    public void attack(Unit unit) {
+    public boolean isInFiringRange(double distance) {
 
+        if (this.meansOfCombat == null) return false;
+
+        if (this.meansOfCombat.size() == 0) return false;
+
+        for (MeanOfCombat meanOfCombat : this.meansOfCombat) {
+
+            if (meanOfCombat.getFiringRange() >= distance) return true;
+
+        }
+
+        return false;
     }
 
-    public Position getCurrentPosition() {
+    public int[] getCurrentPosition() {
         return currentPosition;
     }
 
-    public void setStartingPosition(Position position) {
+    public void setStartingPosition(int[] coordinates) {
 
-        this.currentPosition = position;
+        this.currentPosition = coordinates;
         this.pastPositions.clear();
     }
 
@@ -91,16 +112,36 @@ class Unit {
         isInCombat = inCombat;
     }
 
-    private void addPastPosition(Position position) {
+    private void addPastPosition(int[] prevCoordinates) {
 
-        Position pastPosition = new Position();
-        pastPosition.setCoordinates(position.getCoordinates());
+        int[] prevCoordinatesClone = new int[2];
 
-        this.pastPositions.add(pastPosition);
+        prevCoordinatesClone[0] = prevCoordinates[0];
+        prevCoordinatesClone[1] = prevCoordinates[1];
+
+        this.pastPositions.add(prevCoordinatesClone);
     }
 
-    public LinkedList<Position> getPastPositions() {
+    public LinkedList<int[]> getPastPositions() {
         return this.pastPositions;
+    }
+
+    public double getFiringRate() {
+
+        return 1/(this.meansOfCombat.size() * this.meansOfCombat.get(0).getFiringRate());
+    }
+
+    public long getFiringTime() {
+
+        return (long) (1/this.getFiringRate());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -108,18 +149,21 @@ class Unit {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Unit unit = (Unit) o;
-        return isInCombat == unit.isInCombat && Objects.equals(currentPosition, unit.currentPosition) && Objects.equals(pastPositions, unit.pastPositions) && Objects.equals(movementPath, unit.movementPath) && Objects.equals(meansOfCombat, unit.meansOfCombat) && Objects.equals(timeToCover100m, unit.timeToCover100m);
+        return isInCombat == unit.isInCombat && Arrays.equals(currentPosition, unit.currentPosition) && Objects.equals(pastPositions, unit.pastPositions) && Objects.equals(movementPath, unit.movementPath) && Objects.equals(meansOfCombat, unit.meansOfCombat) && Objects.equals(timeToCover100m, unit.timeToCover100m);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(currentPosition, pastPositions, movementPath, meansOfCombat, timeToCover100m, isInCombat);
+        int result = Objects.hash(pastPositions, movementPath, meansOfCombat, timeToCover100m, isInCombat);
+        result = 31 * result + Arrays.hashCode(currentPosition);
+        return result;
     }
 
     @Override
     public String toString() {
         return "Unit{" +
-                "currentPosition=" + currentPosition +
+                "name='" + name + '\'' +
+                ", currentPosition=" + Arrays.toString(currentPosition) +
                 ", pastPositions=" + pastPositions +
                 ", movementPath=" + movementPath +
                 ", meansOfCombat=" + meansOfCombat +
