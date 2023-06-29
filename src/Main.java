@@ -10,13 +10,11 @@ public class Main {
     public static void main(String[] args) {
 
         Clock clock = new Clock(new Time(1000));
-        clock.setEndTime(new Time(1000*60));
+        clock.setEndTime(new Time(1000*6000));
 
         Unit unit = new Unit();
-        unit.setTimeToCover100m(new Time(60000));
 
         Unit uni2 = new Unit();
-        uni2.setTimeToCover100m(new Time(3000));
 
         MeanOfCombat tank = new MeanOfCombat(5000, 3000, 0.3);
         MeanOfCombat mortar = new MeanOfCombat(3000, 2000, 0.2);
@@ -59,14 +57,14 @@ public class Main {
         unit.setMovementPath(movementPath1);
         unit.setStartingPosition(new int[]{0,0});
         unit.setInCombat(false);
-        unit.setTimeToCover100m(new Time(1000*60));
+        unit.setTimeToCover100m(new Time(1000*30));
         unit.addMeanOfCombat(tank);
 
         uni2.setName("2 brigade");
         uni2.setMovementPath(movementPath1);
         uni2.setStartingPosition(new int[]{10,10});
         uni2.setInCombat(false);
-        uni2.setTimeToCover100m(new Time(1000*60));
+        uni2.setTimeToCover100m(new Time(1000*30));
         uni2.addMeanOfCombat(mortar);
 
         List<Unit> unitList = new ArrayList<>();
@@ -74,8 +72,8 @@ public class Main {
         unitList.add(uni2);
 
         Terrain terrain = new Terrain();
-        terrain.setHeight(1000);
-        terrain.setWidth(1000);
+        terrain.setHeight(20);
+        terrain.setWidth(30);
 
         Simulation simulationTest = new Simulation(0.5, 100);
 
@@ -89,5 +87,8 @@ public class Main {
         System.out.println(uni2.getName() + " used ammunition = " + uni2.getNumberOfAmmoUsed());
 
         System.out.println(simulationTest.getActivityLog());
+
+        MovementVisualization movementVisualization = new MovementVisualization(terrain, unitList);
+        movementVisualization.visualise();
     }
 }
